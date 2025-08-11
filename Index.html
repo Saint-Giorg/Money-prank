@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Money Transfer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff6b6b;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            flex-direction: column;
+        }
+
+        .heart {
+            color: red;
+            font-size: 24px;
+            margin: 10px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart-emoji {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: float-up 4s linear forwards;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts-container"></div>
+    
+    <div class="container">
+        <h1>💖 Instant Money Transfer 💖</h1>
+        
+        <div class="input-group">
+            <label for="account">Recipient Account Number</label>
+            <input type="text" id="account" placeholder="Enter account number">
+        </div>
+        
+        <div class="input-group">
+            <label for="amount">Amount to Send ($)</label>
+            <input type="number" id="amount" placeholder="Enter amount">
+        </div>
+        
+        <button id="send-btn">Send Money Now</button>
+        
+        <div class="result" id="result">
+            Ready to transfer your money securely!
+        </div>
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById('send-btn');
+        const accountInput = document.getElementById('account');
+        const amountInput = document.getElementById('amount');
+        const resultDiv = document.getElementById('result');
+        const heartsContainer = document.getElementById('hearts-container');
+
+        // Create floating hearts
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-emoji');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = 3 + Math.random() * 5 + 's';
+                heartsContainer.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 8000);
+            }, 300);
+        }
+
+        createHearts();
+
+        sendBtn.addEventListener('click', () => {
+            const account = accountInput.value.trim();
+            const amount = amountInput.value.trim();
+            
+            if (!account || !amount) {
+                resultDiv.innerHTML = 'Please enter both account number and amount!';
+                resultDiv.style.color = '#ff6b6b';
+                return;
+            }
+            
+            if (isNaN(amount) {
+                resultDiv.innerHTML = 'Please enter a valid amount!';
+                resultDiv.style.color = '#ff6b6b';
+                return;
+            }
+            
+            // Show sending message
+            resultDiv.innerHTML = `
+                <div class="heart">💸</div>
+                <div>Sending $${amount} to account ${account}...</div>
+                <div>Processing transaction...</div>
+            `;
+            resultDiv.style.color = '#333';
+            
+            // After 3 seconds, show success message
+            setTimeout(() => {
+                resultDiv.innerHTML = `
+                    <div class="heart">✅</div>
+                    <div>Success! $${amount} sent to account ${account}.</div>
+                    <div>Transaction completed successfully!</div>
+                `;
+                
+                // After 30 seconds, reveal the prank
+                setTimeout(() => {
+                    resultDiv.innerHTML = `
+                        <div class="heart">😂</div>
+                        <div>PRANK ALERT!</div>
+                        <div>Did you really think I'd send you money?</div>
+                        <div>Gotcha! This was just a joke!</div>
+                        <div class="heart">Sweet Dreams❤️</div>
+                    `;
+                    resultDiv.style.color = '#ff6b6b';
+                }, 30000);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
